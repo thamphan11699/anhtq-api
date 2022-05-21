@@ -50,7 +50,7 @@ public class RestColorController {
     }
 
     @PostMapping("/all")
-    @Secured({Constants.ROLE_ADMIN})
+    @Secured({Constants.ROLE_ADMIN, Constants.ROLE_USER})
     public ResponseEntity<Page<ColorDto>> getAll(@RequestBody SearchDto dto) {
         Page<ColorDto> result = service.getAll(dto);
         return new ResponseEntity<>(result, result != null? HttpStatus.OK : HttpStatus.BAD_REQUEST);

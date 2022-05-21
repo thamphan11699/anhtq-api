@@ -145,4 +145,13 @@ public class PublicController {
         return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
     }
 
+    @GetMapping("/get-product/{id}")
+    public ResponseEntity<List<ProductDto>> getAllParent(@PathVariable Long id) {
+        List<ProductDto> result = null;
+        if (id != null) {
+            result = productService.getByParentId(id);
+        }
+        return new ResponseEntity<>(result, result != null? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+    }
+
 }

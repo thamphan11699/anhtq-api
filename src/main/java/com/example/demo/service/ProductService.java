@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.ColorDto;
 import com.example.demo.dto.ProductDto;
 import com.example.demo.dto.SearchDto;
 import com.example.demo.dto.SearchProductDto;
@@ -24,4 +25,6 @@ public interface ProductService {
     List<ProductDto> getByCategory(Long cateId);
 
     ProductDto getOneByUser(Long id);
+
+    ProductDto findByColorAndSize(Long parentId, ColorDto color, String size);
 }

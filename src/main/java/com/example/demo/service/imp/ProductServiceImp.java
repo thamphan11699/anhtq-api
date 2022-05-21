@@ -5,6 +5,7 @@ import com.example.demo.model.Category;
 import com.example.demo.model.Image;
 import com.example.demo.model.Product;
 import com.example.demo.model.ProductCategory;
+import com.example.demo.payload.ApiResponse;
 import com.example.demo.repository.*;
 import com.example.demo.service.FileService;
 import com.example.demo.service.ImageService;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -87,6 +90,10 @@ public class ProductServiceImp implements ProductService {
 
                 if (dto.getParent() != null && dto.getParent().getId() != null) {
                     Product parent = repository.getById(dto.getParent().getId());
+                    // Check co hay chua
+                    if (Objects.equals(dto.getColor().getId(), product.getColor().getId()) && Objects.equals(dto.getSize(), product.getSize()) && id == null) {
+                        return new ProductDto();
+                    }
                     product.setParent(parent);
                     if (dto.getCategories() == null || dto.getCategories().size() == 0) {
                         product.getCategories().clear();
@@ -289,6 +296,26 @@ public class ProductServiceImp implements ProductService {
             if (id != null) {
                 Product product = repository.getById(id);
                 return new ProductDto(product, true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public ProductDto findByColorAndSize(Long parentId, ColorDto color, String size) {
+        try {
+            String sql = "";
+            sql = "SELECT new com.example.demo.dto.ProductDto(entity ) FROM Product as entity WHERE (1=1) AND entity.parent.id =:id " +
+                    " AND entity.color.id =:colorId AND entity.size =:size";
+            Query query = manager.createQuery(sql, ProductDto.class);
+            query.setParameter("id", parentId);
+            query.setParameter("colorId", color.getId());
+            query.setParameter("size", size);
+            List<ProductDto> list = (List<ProductDto>) query.getResultList();
+            if (list.size() > 0) {
+                return list.get(0);
             }
         } catch (Exception e) {
             e.printStackTrace();
