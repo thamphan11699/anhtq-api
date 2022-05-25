@@ -5,7 +5,6 @@ import com.example.demo.dto.CartProductDto;
 import com.example.demo.dto.SearchDto;
 import com.example.demo.model.Cart;
 import com.example.demo.model.CartProduct;
-import com.example.demo.model.User;
 import com.example.demo.repository.CartProductRepository;
 import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.ProductRepository;
@@ -15,9 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -77,7 +73,7 @@ public class CartServiceImp implements CartService {
                 return new CartDto(cartRepository.getById(cartDto.getId()));
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         return null;
     }
