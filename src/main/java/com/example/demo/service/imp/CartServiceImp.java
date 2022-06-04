@@ -135,4 +135,18 @@ public class CartServiceImp implements CartService {
         }
         return null;
     }
+
+    @Override
+    public CartDto typingAmount(CartProductDto cartProductDto, Long value, Long cartId) {
+        try {
+            CartProduct cartProduct = cartProductRepository.getById(cartProductDto.getId());
+            cartProduct.setAmount(value);
+            cartProductRepository.save(cartProduct);
+            return new CartDto(cartRepository.getById(cartId));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

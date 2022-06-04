@@ -9,10 +9,10 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = "SELECT P.* FROM tbl_product AS P JOIN tbl_product_category AS PC ON PC.product_id = P.id JOIN tbl_category AS C ON C.id = PC.category_id \n" +
-            "WHERE P.parent_id is NULL AND PC.category_id IN (?1)", nativeQuery = true)
+            "WHERE (P.deleted = false OR p.deleted is null) AND P.parent_id is NULL AND PC.category_id IN (?1)", nativeQuery = true)
     List<Product> getProductsByCategory(Long categoryId);
 
     @Query(value = "SELECT P.* FROM tbl_product AS P  \n" +
-            "WHERE P.parent_id is NULL", nativeQuery = true)
+            "WHERE (P.deleted = false OR p.deleted is null) AND P.parent_id is NULL", nativeQuery = true)
     List<Product> getProductsByAllCategory();
 }

@@ -91,11 +91,20 @@ public class ProductServiceImp implements ProductService {
                 if (dto.getParent() != null && dto.getParent().getId() != null) {
                     Product parent = repository.getById(dto.getParent().getId());
                     // Check co hay chua
-                    if (Objects.equals(dto.getColor().getId(), product.getColor().getId()) && Objects.equals(dto.getSize(), product.getSize()) && id == null) {
-                        return new ProductDto();
+                    boolean check = false;
+                    if (parent.getChildren() != null && !parent.getChildren().isEmpty()) {
+                        for (Product product1 : parent.getChildren()) {
+                            if (product.getSize().equals(product1.getSize()) && product.getColor().getId().equals(product1.getColor().getId()) && !Boolean.TRUE.equals(product1.getDeleted())) {
+                                check = true;
+                                break;
+                            }
+                        }
+                        if (check) {
+                            return new ProductDto();
+                        }
                     }
                     product.setParent(parent);
-                    if (dto.getCategories() == null || dto.getCategories().size() == 0) {
+                    if (dto.getCategories() == null || dto.getCategories().isEmpty()) {
                         product.getCategories().clear();
                         product.getCategories().addAll(parent.getCategories());
                     }
@@ -171,8 +180,8 @@ public class ProductServiceImp implements ProductService {
 
             String order = " ORDER BY entity.updatedBy DESC";
             String whereClause = "";
-            String sqlCount = "select count(entity.id) from Product as entity where (1=1)  ";
-            String sql = "select new com.example.demo.dto.ProductDto(entity, true) from Product as entity where (1=1)  ";
+            String sqlCount = "select count(entity.id) from Product as entity where (1=1) AND (entity.deleted = false OR entity.deleted is null)  ";
+            String sql = "select new com.example.demo.dto.ProductDto(entity, true) from Product as entity where (1=1) AND (entity.deleted = false OR entity.deleted is null)  ";
             if (dto.getText() != null && StringUtils.hasText(dto.getText())) {
                 whereClause += " AND (entity.name like :text OR entity.code like :text OR entity.title :text) ";
             }
@@ -208,7 +217,15 @@ public class ProductServiceImp implements ProductService {
     public boolean delete(Long id) {
         try {
             if (id != null) {
-                repository.deleteById(id);
+                Product product = repository.getById(id);
+                if (product.getChildren() != null && !product.getChildren().isEmpty()) {
+                    for (Product product1 : product.getChildren()) {
+                        product1.setDeleted(true);
+                        repository.save(product1);
+                    }
+                }
+                product.setDeleted(true);
+                repository.save(product);
                 return true;
             }
         } catch (Exception e) {
@@ -254,9 +271,9 @@ public class ProductServiceImp implements ProductService {
         try {
             String sql = "";
             if (id != null) {
-                sql = "SELECT new com.example.demo.dto.ProductDto(entity ) FROM Product as entity WHERE (1=1) AND entity.parent.id =:id";
+                sql = "SELECT new com.example.demo.dto.ProductDto(entity ) FROM Product as entity WHERE (1=1) AND entity.parent.id =:id AND (entity.deleted = false OR entity.deleted is null)";
             } else {
-                sql = "SELECT new com.example.demo.dto.ProductDto(entity) FROM Product as entity WHERE (1=1) AND entity.parent is NULL ";
+                sql = "SELECT new com.example.demo.dto.ProductDto(entity) FROM Product as entity WHERE (1=1) AND entity.parent is NULL AND (entity.deleted = false OR entity.deleted is null)";
             }
             Query query = manager.createQuery(sql, ProductDto.class);
             if (id != null) {

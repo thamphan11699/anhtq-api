@@ -78,7 +78,7 @@ public class PublicController {
     @PostMapping("product/get-all")
     public ResponseEntity<List<ProductDto>> getAllProducts(@RequestBody SearchProductDto dto) {
         List<ProductDto> result = productService.getAll(dto).getContent();
-        return new ResponseEntity<>(result, result != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("product/{id}")

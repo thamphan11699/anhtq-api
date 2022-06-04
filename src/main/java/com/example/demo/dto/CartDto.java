@@ -3,8 +3,7 @@ package com.example.demo.dto;
 import com.example.demo.model.Cart;
 import com.example.demo.model.CartProduct;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class CartDto extends BaseDto {
 
@@ -19,15 +18,23 @@ public class CartDto extends BaseDto {
     public CartDto(Cart entity) {
         this.id = entity.getId();
         this.user = new UserDto(entity.getUser());
-        if (entity.getCartProducts() != null && entity.getCartProducts().size() > 0) {
+        if (entity.getCartProducts() != null && !entity.getCartProducts().isEmpty()) {
             this.cartProducts = new ArrayList<>();
             this.subtotal = 0L;
+            ArrayList<CartProductDto> cartProductDtos = new ArrayList<>();
             for (CartProduct cartProduct : entity.getCartProducts()) {
                 if (cartProduct.getIsDelete() == null || cartProduct.getIsDelete() == 1L) {
-                    cartProducts.add(new CartProductDto(cartProduct));
+                    cartProductDtos.add(new CartProductDto(cartProduct));
                     this.subtotal += cartProduct.getProduct().getPrice() * cartProduct.getAmount();
                 }
             }
+            Collections.sort(cartProductDtos, new Comparator<CartProductDto>() {
+                @Override
+                public int compare(CartProductDto o1, CartProductDto o2) {
+                    return o2.id.compareTo(o1.id);
+                }
+            });
+            this.cartProducts = cartProductDtos;
         }
     }
 

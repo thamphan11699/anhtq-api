@@ -72,6 +72,17 @@ public class Product extends UserDateAudit {
     @OneToMany(mappedBy = "parent")
     private Set<Product> children;
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public String getName() {
         return name;
     }

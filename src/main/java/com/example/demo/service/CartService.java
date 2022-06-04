@@ -22,5 +22,6 @@ public interface CartService {
 
     CartDto updateCartAmount(CartProductDto cartProductDto, Long bonus, Long cartId);
 
+    CartDto typingAmount(CartProductDto cartProductDto, Long value, Long cartId);
 
 }

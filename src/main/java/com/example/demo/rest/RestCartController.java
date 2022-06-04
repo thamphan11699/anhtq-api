@@ -60,4 +60,11 @@ public class RestCartController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PostMapping("/typing-amount/{cartId}")
+    @Secured({Constants.ROLE_USER})
+    public ResponseEntity<CartDto> typingAmount(@RequestBody CartProductDto cartProductDto, @PathVariable Long cartId) {
+        CartDto result = cartService.typingAmount(cartProductDto, cartProductDto.getAmount() != null ? cartProductDto.getAmount() : 0, cartId);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 }

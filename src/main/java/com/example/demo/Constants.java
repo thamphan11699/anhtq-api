@@ -13,3 +13,7 @@ public class Constants {
     public static final Long RECEIVED = 5L;
     public static final Long DELETE = 6L;
 }
+
+class ProductType {
+    private String test = "TEST";
+}
