@@ -12,6 +12,8 @@ public class CartDto extends BaseDto {
     private CartProductDto cartProduct;
     private Long subtotal;
 
+    private String description;
+
     public CartDto() {
     }
 
@@ -70,4 +72,11 @@ public class CartDto extends BaseDto {
         this.subtotal = subtotal;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

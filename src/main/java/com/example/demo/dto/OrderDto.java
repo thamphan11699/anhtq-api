@@ -14,6 +14,8 @@ public class OrderDto extends BaseDto {
     private String description;
     private Long income;
 
+    private String statusText;
+
     public OrderDto() {
     }
 
@@ -28,6 +30,7 @@ public class OrderDto extends BaseDto {
         }
         this.status = entity.getStatus();
         this.description = entity.getDescription();
+        this.statusText = entity.getStatus() == 1 ? "CREATED" : entity.getStatus() == 2 ? "ACCEPTED" : entity.getStatus() == 3 ? "PENDING" : entity.getStatus() == 4 ? "SHIPPING" : entity.getStatus() == 5 ? "RECEIVED" : entity.getStatus() == 6 ? "CANCLE" : "";
     }
 
     public List<OrderProductDto> getOrderProducts() {
@@ -76,5 +79,13 @@ public class OrderDto extends BaseDto {
 
     public void setIncome(Long income) {
         this.income = income;
+    }
+
+    public String getStatusText() {
+        return statusText;
+    }
+
+    public void setStatusText(String statusText) {
+        this.statusText = statusText;
     }
 }

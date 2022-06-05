@@ -178,7 +178,7 @@ public class ProductServiceImp implements ProductService {
             else
                 pageIndex = 0;
 
-            String order = " ORDER BY entity.updatedBy DESC";
+            String order = " ORDER BY entity.updatedAt DESC";
             String whereClause = "";
             String sqlCount = "select count(entity.id) from Product as entity where (1=1) AND (entity.deleted = false OR entity.deleted is null)  ";
             String sql = "select new com.example.demo.dto.ProductDto(entity, true) from Product as entity where (1=1) AND (entity.deleted = false OR entity.deleted is null)  ";

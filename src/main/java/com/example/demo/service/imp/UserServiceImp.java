@@ -68,6 +68,7 @@ public class UserServiceImp implements UserService {
             if (user == null) {
                 user = new User();
             }
+            user.setAvatar(userDto.getAvatar());
             user.setUsername(userDto.getUsername());
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
             user.setEmail(userDto.getEmail());
@@ -125,7 +126,7 @@ public class UserServiceImp implements UserService {
         else
             pageIndex = 0;
 
-        String order = " ORDER BY entity.updatedBy DESC";
+        String order = " ORDER BY entity.updatedAt DESC";
         String whereClause = "";
         String sqlCount = "select count(entity.id) from User as entity where (1=1) AND entity.status = 1 ";
         String sql = "select new com.example.demo.dto.UserDto(entity) from User as entity where (1=1) AND entity.status = 1 ";

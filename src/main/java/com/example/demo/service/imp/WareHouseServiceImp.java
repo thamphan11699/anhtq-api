@@ -63,7 +63,7 @@ public class WareHouseServiceImp implements WareHouseService {
             else
                 pageIndex = 0;
 
-            String order = " ORDER BY entity.updatedBy DESC";
+            String order = " ORDER BY entity.updatedAt DESC";
             String whereClause = "";
             String sqlCount = "select count(entity.id) from WareHouse as entity where (1=1)  ";
             String sql = "select new com.example.demo.dto.WareHouseDto(entity) from WareHouse as entity where (1=1)  ";

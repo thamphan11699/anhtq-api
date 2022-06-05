@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/order")
 public class RestOrderController {
@@ -54,4 +56,10 @@ public class RestOrderController {
         return new ResponseEntity<>(orderDto, orderDto != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping("/get-by-user/{id}")
+    @Secured({Constants.ROLE_USER})
+    public ResponseEntity<List<OrderDto>> getByUserId(@PathVariable Long id) {
+        List<OrderDto> orderDto = orderService.getByUserId(id);
+        return new ResponseEntity<>(orderDto, orderDto != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+    }
 }

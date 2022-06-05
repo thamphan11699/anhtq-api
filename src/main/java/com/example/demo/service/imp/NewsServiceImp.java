@@ -79,7 +79,7 @@ public class NewsServiceImp implements NewsService {
             else
                 pageIndex = 0;
 
-            String order = " ORDER BY entity.updatedBy DESC";
+            String order = " ORDER BY entity.updatedAt DESC";
             String whereClause = "";
             String sqlCount = "select count(entity.id) from News as entity where (1=1)  ";
             String sql = "select new com.example.demo.dto.NewsDto(entity) from News as entity where (1=1)  ";

@@ -55,7 +55,7 @@ public class OrderServiceImp implements OrderService {
             else
                 pageIndex = 0;
 
-            String order = " ORDER BY entity.updatedBy DESC";
+            String order = " ORDER BY entity.createdAt DESC";
             String whereClause = "";
             String sqlCount = "select count(entity.id) from Order as entity where (1=1)  ";
             String sql = "select new com.example.demo.dto.OrderDto(entity) from Order as entity where (1=1)  ";
@@ -79,8 +79,7 @@ public class OrderServiceImp implements OrderService {
             long count = (long) queryCount.getSingleResult();
 
             Pageable pageable = PageRequest.of(pageIndex, pageSize);
-            Page<OrderDto> result = new PageImpl<>(dtos, pageable, count);
-            return result;
+            return new PageImpl<>(dtos, pageable, count);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -104,7 +103,7 @@ public class OrderServiceImp implements OrderService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
@@ -116,9 +115,10 @@ public class OrderServiceImp implements OrderService {
                 order.setCode(String.valueOf(UUID.randomUUID()).toUpperCase());
                 order.setStatus(Constants.CREATED);
                 order.setIncome(cartDto.getSubtotal());
+                order.setDescription(cartDto.getDescription());
                 orderRepository.save(order);
                 Set<OrderProduct> orderProducts = new HashSet<>();
-                if (cartDto.getCartProducts() != null && cartDto.getCartProducts().size() > 0) {
+                if (cartDto.getCartProducts() != null && !cartDto.getCartProducts().isEmpty()) {
                     for (CartProductDto cartProductDto: cartDto.getCartProducts()) {
                         if (cartProductDto.getProduct() != null && cartProductDto.getProduct().getId() != null) {
                             OrderProduct orderProduct = new OrderProduct();

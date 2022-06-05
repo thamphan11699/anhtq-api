@@ -78,7 +78,7 @@ public class ContextProviderServiceImp implements ContextProviderService {
             else
                 pageIndex = 0;
 
-            String order = " ORDER BY entity.updatedBy DESC";
+            String order = " ORDER BY entity.updatedAt DESC";
             String whereClause = "";
             String sqlCount = "select count(entity.id) from ContextProvider as entity where (1=1)  ";
             String sql = "select new com.example.demo.dto.ContextProviderDto(entity) from ContextProvider as entity where (1=1)  ";
