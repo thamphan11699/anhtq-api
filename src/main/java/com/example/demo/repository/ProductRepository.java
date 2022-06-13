@@ -15,4 +15,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT P.* FROM tbl_product AS P  \n" +
             "WHERE (P.deleted = false OR p.deleted is null) AND P.parent_id is NULL", nativeQuery = true)
     List<Product> getProductsByAllCategory();
+
+    @Query(value = "SELECT P.* FROM tbl_product AS P  \n" +
+            "WHERE (P.deleted = false OR p.deleted is null) AND P.parent_id is NULL AND P.name LIKE %?1%", nativeQuery = true)
+    List<Product> getProductsByAllCategory(String text);
 }

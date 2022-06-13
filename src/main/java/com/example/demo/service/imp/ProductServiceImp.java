@@ -287,13 +287,17 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public List<ProductDto> getByCategory(Long cateId) {
+    public List<ProductDto> getByCategory(Long cateId, String text) {
         List<Product> products;
         try {
             if (cateId != null) {
                 products = repository.getProductsByCategory(cateId);
             } else {
-                products = repository.getProductsByAllCategory();
+                if (StringUtils.hasText(text)) {
+                    products = repository.getProductsByAllCategory(text);
+                } else {
+                    products = repository.getProductsByAllCategory();
+                }
             }
             List<ProductDto> result = new ArrayList<>();
             for (Product product : products) {

@@ -22,7 +22,7 @@ public interface ProductService {
 
     List<ProductDto> getByParentId(Long o);
 
-    List<ProductDto> getByCategory(Long cateId);
+    List<ProductDto> getByCategory(Long cateId, String text);
 
     ProductDto getOneByUser(Long id);
 
