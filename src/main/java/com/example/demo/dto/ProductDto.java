@@ -32,6 +32,8 @@ public class ProductDto extends BaseDto {
     private WareHouseDto wareHouse;
     private ContextProviderDto contextProvider;
 
+    private Long priceInput;
+
     public ProductDto() {
     }
 
@@ -68,6 +70,7 @@ public class ProductDto extends BaseDto {
         }
         this.sold = entity.getSold();
         this.deleted = entity.getDeleted();
+        this.priceInput = entity.getPriceInput();
     }
 
     public ProductDto(Product entity, boolean parent) {
@@ -110,6 +113,7 @@ public class ProductDto extends BaseDto {
             this.parentId = entity.getParent().getId();
         }
         this.sold = entity.getSold();
+        this.priceInput = entity.getPriceInput();
     }
 
     public Boolean getDeleted() {
@@ -254,5 +258,13 @@ public class ProductDto extends BaseDto {
 
     public void setSold(Long sold) {
         this.sold = sold;
+    }
+
+    public Long getPriceInput() {
+        return priceInput;
+    }
+
+    public void setPriceInput(Long priceInput) {
+        this.priceInput = priceInput;
     }
 }

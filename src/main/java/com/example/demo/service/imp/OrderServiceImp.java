@@ -159,6 +159,15 @@ public class OrderServiceImp implements OrderService {
             order.setStatus(status);
             order.setDescription(desc);
             orderRepository.save(order);
+            if (status == 6) {
+                Set<OrderProduct> orderProducts = order.getOrderProducts();
+                for (OrderProduct orderProduct : orderProducts) {
+                    Product product = orderProduct.getProduct();
+                    product.setQuantity((int) (product.getQuantity() + orderProduct.getAmount()));
+                    product.setSold(product.getSold() - orderProduct.getAmount());
+                    productRepository.save(product);
+                }
+            }
             return new OrderDto(order);
         }
         return null;

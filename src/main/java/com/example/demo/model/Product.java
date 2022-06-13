@@ -75,6 +75,17 @@ public class Product extends UserDateAudit {
     @Column(name = "deleted")
     private Boolean deleted;
 
+    @Column(name = "price_input")
+    private Long priceInput;
+
+    public Long getPriceInput() {
+        return priceInput;
+    }
+
+    public void setPriceInput(Long priceInput) {
+        this.priceInput = priceInput;
+    }
+
     public Boolean getDeleted() {
         return deleted;
     }
