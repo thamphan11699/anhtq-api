@@ -130,7 +130,7 @@ public class OrderServiceImp implements OrderService {
                             orderProductRepository.save(orderProduct);
                             orderProducts.add(orderProduct);
                             product.setQuantity((int) (product.getQuantity() - cartProductDto.getAmount()));
-                            product.setSold(product.getSold() != null ? product.getSold() + cartProductDto.getAmount() : cartProductDto.getAmount());
+//                            product.setSold(product.getSold() != null ? product.getSold() + cartProductDto.getAmount() : cartProductDto.getAmount());
                                 productRepository.save(product);
                             CartProduct cartProduct = cartProductRepository.getById(cartProductDto.getId());
                             cartProduct.setIsDelete(2L);
@@ -159,12 +159,18 @@ public class OrderServiceImp implements OrderService {
             order.setStatus(status);
             order.setDescription(desc);
             orderRepository.save(order);
+            Set<OrderProduct> orderProducts = order.getOrderProducts();
             if (status == 6) {
-                Set<OrderProduct> orderProducts = order.getOrderProducts();
                 for (OrderProduct orderProduct : orderProducts) {
                     Product product = orderProduct.getProduct();
                     product.setQuantity((int) (product.getQuantity() + orderProduct.getAmount()));
                     product.setSold(product.getSold() - orderProduct.getAmount());
+                    productRepository.save(product);
+                }
+            } else if (status == 4) {
+                for (OrderProduct orderProduct : orderProducts) {
+                    Product product = orderProduct.getProduct();
+                    product.setSold(product.getSold() != null ? product.getSold() + orderProduct.getAmount() : orderProduct.getAmount());
                     productRepository.save(product);
                 }
             }
